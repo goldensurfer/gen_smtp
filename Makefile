@@ -1,13 +1,8 @@
-compile:
-	@./rebar compile
+PROJECT = gen_smtp
 
-clean:
-	@./rebar clean
+ERLC_OPTS = +debug_info +warn_export_all +warn_export_vars +warn_shadow_vars +warn_obsolete_guard
 
-test:
-	./rebar -C rebar.test.config get-deps
-	./rebar -C rebar.test.config compile
-	ERL_AFLAGS="-s ssl" 
-	./rebar -C rebar.test.config skip_deps=true eunit
+PLT_APPS = hipe sasl mnesia crypto compiler syntax_tools
+DIALYZER_OPTS = -Werror_handling -Wrace_conditions -Wunmatched_returns | fgrep -v -f ./dialyzer.ignore-warning
 
-.PHONY: compile clean test
+include erlang.mk
